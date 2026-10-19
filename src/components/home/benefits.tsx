@@ -35,9 +35,9 @@ const benefits = [
 
 export default function Benefits() {
   return (
-    <section className="container mx-auto grid w-full max-w-6xl grid-cols-1 gap-4 px-4 py-8 sm:grid-cols-2 lg:grid-cols-4">
+    <section className="container mx-auto grid w-full grid-cols-1 gap-4 px-4 sm:px-6 lg:px-8 sm:grid-cols-2 lg:grid-cols-4 py-8">
       {benefits.map(({ title, description, icon: Icon, iconClassName }) => (
-        <Card key={title} size="sm" className="rounded-2xl">
+        <Card key={title} size="sm" className="rounded-2xl duration-400 hover:shadow-xl">
           <CardContent className="flex items-center gap-4">
             <div className={`flex size-12 shrink-0 items-center justify-center rounded-full ${iconClassName}`}>
               <Icon className="size-6" aria-hidden="true" />

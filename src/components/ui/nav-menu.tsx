@@ -1,6 +1,6 @@
 "use client";
 
-import type { LucideIcon } from "lucide-react";
+import { Headset, type LucideIcon } from "lucide-react";
 import Link from "next/link";
 import React, { type ComponentProps } from "react";
 import { cn } from "@/lib/utils";
@@ -8,33 +8,42 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
+  NavigationMenuList
 } from "@/components/ui/navigation-menu";
-import { foods, travelMenuItems } from "@/config/navbar";
 
 export const NavMenu = (props: ComponentProps<typeof NavigationMenu>) => (
   <NavigationMenu {...props}>
-    <NavigationMenuList className="gap-1 space-x-0 rtl:space-x-reverse text-sm">
+    <NavigationMenuList className="gap-1 space-x-0 ms-3.5  rtl:space-x-reverse">
 
-      <NavigationMenuItem>
-        <Button asChild variant="ghost">
-          <Link href="/products">Products</Link>
+    <NavigationMenuItem>
+        <Button asChild variant="ghost" className="text-md text-gray-800">
+          <Link href="/">Home</Link>
         </Button>
       </NavigationMenuItem>
       <NavigationMenuItem>
-        <Button asChild variant="ghost">
+        <Button asChild variant="ghost" className="text-md text-gray-800">
+          <Link href="/products">Shop</Link>
+        </Button>
+      </NavigationMenuItem>
+      <NavigationMenuItem>
+        <Button asChild variant="ghost" className="text-md text-gray-800">
           <Link href="/categories">Categories</Link>
         </Button>
       </NavigationMenuItem>
        <NavigationMenuItem>
-        <Button asChild variant="ghost">
+        <Button asChild variant="ghost" className="text-md text-gray-800">
           <Link href="/brands">Brands</Link>
         </Button>
       </NavigationMenuItem>
+      <div className="hidden xl:flex justify-center items-center gap-2 ms-2 whitespace-nowrap">
+        <Headset className="text-green-700 bg-green-100 p-3 rounded-full size-10"/>
+        <div className="flex flex-col font-medium">
+          <p className="text-gray-500 text-xs">Support</p>
+          <span className="text-[13px]">24/7 Help</span>
+        </div>
+      </div>
     </NavigationMenuList>
   </NavigationMenu>
 );
@@ -55,8 +64,8 @@ const ListItem = React.forwardRef<
           {...props}
         >
           <props.icon className="mb-3 size-6" />
-          <div className="font-medium leading-none">{title}</div>
-          <p className="line-clamp-2 text-muted-foreground text-sm leading-snug">
+          <div className="font-medium  leading-none">{title}</div>
+          <p className="line-clamp-2 text-muted-foreground leading-snug">
             {children}
           </p>
         </Link>

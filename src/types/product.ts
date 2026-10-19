@@ -20,9 +20,5 @@ export interface ProductI {
   updatedAt: string
   id: string
   priceAfterDiscount?: number
-  availableColors?: any[]
+  availableColors?: unknown[]
 }
-
-
-
-

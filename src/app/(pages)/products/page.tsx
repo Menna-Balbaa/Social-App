@@ -1,20 +1,59 @@
-import { Button } from "@/components/ui/button";
+import AddProductToCartBtn from "@/components/cart/addProductToCartBtn";
 import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { getALLProducts } from "@/services/products.services";
 import { ProductI } from "@/types/product";
-import { Star } from "lucide-react";
+import { Box, Star } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import AddProductToWishlistBtn from "@/components/wishlist/addProductToWishlistBtn";
 
-export default async function Products() {
+export default async function Products({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const { search } = await searchParams;
+  const query = (Array.isArray(search) ? search[0] : search)?.trim().toLowerCase() ?? "";
+
   const data = await getALLProducts();
 
-  const products: ProductI[] = data.data;
+  const allProducts: ProductI[] = data.data;
+  const products = query
+    ? allProducts.filter(
+        (p) =>
+          p.title.toLowerCase().includes(query) ||
+          p.category?.name.toLowerCase().includes(query)
+      )
+    : allProducts;
 
   return (
-    <div className="container mx-auto p-10">
-      <h1 className="relative mb-8 ps-4 text-4xl font-bold before:absolute before:inset-s-0 before:top-0 before:h-full before:w-1.5 before:rounded-full before:bg-primary">
-        Featured <span className="text-primary">Products</span>
-      </h1>
+    <>
+    <div className="bg-linear-to-r from-green-600 to-green-400 py-14 text-white">
+        <div className="container mx-auto px-10">
+          <p className=" text-md mb-4">
+            <Link href="/" className="hover:underline ">Home</Link> /{" "}
+            <span className="font-semibold text-white">All Products</span>
+          </p>
+          <div className="mt-3 flex items-center gap-4">
+            <span className="flex size-16 items-center justify-center rounded-2xl bg-white/20">
+              <Box className="size-8" />
+            </span>
+            <div>
+              <h1 className="text-4xl font-bold mb-1">All Products</h1>
+              <p className="text-md">Explore our complete product collection</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <div className="container mx-auto p-10">
+    
+
+      {query && (
+        <p className="mb-6 text-gray-600">
+          {products.length} result(s) for &quot;{query}&quot;
+        </p>
+      )}
 
       <div className="grid grid-cols-12 gap-6">
         {products?.map((product) => (
@@ -23,23 +62,34 @@ export default async function Products() {
             className="col-span-12 sm:col-span-6 lg:col-span-3"
           >
             <Card className="mx-auto flex h-full w-full max-w-sm flex-col overflow-hidden pt-0 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
-              <Image
-                width={600}
-                height={600}
-                src={product.imageCover}
-                alt={product.title}
-                className="h-72 w-full border-b-4 border-primary object-cover"
-              />
+
+              <div className="relative">
+                <Link href={`/products/${product._id}`}>
+                  <Image
+                    width={600}
+                    height={600}
+                    src={product.imageCover}
+                    alt={product.title}
+                    className="h-72 w-full  border-b-4 border-primary object-cover"
+                  />
+                </Link>
+
+                <AddProductToWishlistBtn productId={product._id}/>
+               
+              </div>
+
 
               <CardHeader>
                 <p className="text-sm text-gray-500">{product.category.name}</p>
 
-                <CardTitle
-                  className="line-clamp-2 min-h-14 text-xl font-semibold leading-7"
-                  title={product.title}
-                >
-                  {product.title}
-                </CardTitle>
+                <Link href={`/products/${product._id}`}>
+                  <CardTitle
+                    className="line-clamp-2 min-h-14 text-xl font-semibold leading-7 hover:text-primary"
+                    title={product.title}
+                  >
+                    {product.title}
+                  </CardTitle>
+                </Link>
 
                 <p className="text-lg font-medium">{product.price} EGP</p>
 
@@ -64,12 +114,14 @@ export default async function Products() {
               </CardHeader>
 
               <CardFooter className="mt-auto">
-                <Button className="w-full">Add to Cart</Button>
+                <AddProductToCartBtn productId={product._id} />
               </CardFooter>
             </Card>
           </div>
         ))}
       </div>
     </div>
+    </>
+  
   );
 }
